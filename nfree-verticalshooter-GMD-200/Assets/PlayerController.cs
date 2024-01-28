@@ -15,9 +15,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public SpriteRenderer playerSpriteRender;
 
+    [Header("Weapon shit")]
+    [SerializeField] public GameObject currentWeapon;
+    [SerializeField] public int weaponCooldown = 60;
+    [SerializeField] public WeaponScript weaponWeaponScript;
+
     // input variables
-    private Vector2 moveInput;
-    private bool attackInput;
+    public Vector2 moveInput;
+    private bool attackPressed;
+    private bool attackReleased;
+    private bool shooting = false;
+    private int shootingTime;
+    private int playerEXP;
+
+    //animation variables
+    public int animDirection;
+    public bool animIdle;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +43,8 @@ public class PlayerController : MonoBehaviour
     {
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
-        attackInput = Input.GetKeyDown(KeyCode.J);
-
+        attackPressed = Input.GetMouseButtonDown(0);
+        attackReleased = Input.GetMouseButtonUp(0); ;
         moveInput.Normalize();
 
         if (moveInput.y != 0 || moveInput.x != 0) {
@@ -42,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
         if(moveInput.x != 0)
         {
-            playerAnimator.SetInteger("direction", 2);
+            animDirection = 2;
             if(moveInput.x < 0) {
                 playerSpriteRender.flipX = true;
             } else {
@@ -54,16 +67,39 @@ public class PlayerController : MonoBehaviour
         {
             if (moveInput.y < 0)
             {
-                playerAnimator.SetInteger("direction", 0);
+                animDirection = 0;
             }
             else
             {
-                playerAnimator.SetInteger("direction", 1);
+                animDirection = 1;
             }
         }
-
-
+        playerAnimator.SetInteger("direction", animDirection);
 
         rb.velocity = moveInput * moveSpeed;
+
+        if(attackPressed == true)
+        {
+            shooting = true;
+        }
+        if(attackReleased == true)
+        {
+            shooting = false;
+        }
+
+        if(shooting == true)
+        {
+            shootingTime += 1;
+            if(shootingTime >= weaponCooldown)
+            {
+                weaponWeaponScript.shoot = true;
+                shootingTime = 0;
+            }
+        }
+    }
+     public void IncreaseEXP(int amount)
+    {
+        Debug.Log("INCREASED EXP: " + amount);
+        playerEXP += amount;
     }
 }
