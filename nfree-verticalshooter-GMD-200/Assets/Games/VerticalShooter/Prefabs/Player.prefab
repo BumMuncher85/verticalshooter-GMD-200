@@ -105,6 +105,7 @@ MonoBehaviour:
   weaponSpriteRenderer: {fileID: 9192881811568145676}
   projectiles:
   - {fileID: 0}
+  firePoint: {fileID: 0}
   currentWeapon: 
   shoot: 0
 --- !u!1 &2553813468082314260
@@ -311,7 +312,10 @@ MonoBehaviour:
   currentWeapon: {fileID: 1001267519601320139}
   weaponCooldown: 60
   weaponWeaponScript: {fileID: 0}
+  experienceBar: {fileID: 0}
+  coinText: {fileID: 0}
   moveInput: {x: 0, y: 0}
+  expToNextLevel: 10
   animDirection: 0
   animIdle: 0
 --- !u!1 &5003126231093314356
